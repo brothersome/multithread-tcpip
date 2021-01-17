@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-O2 -Wall -W -Wshadow -D_DEF_NORMAL -I.
-OS=Windows
+OS=Unix
 
 OBJDIR=obj
 
