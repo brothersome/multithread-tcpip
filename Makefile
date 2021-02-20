@@ -10,7 +10,6 @@ BUILDDIR=build
 
 BASEDIR=base
 
-
 objects = main.o \
 	initialize.o
 	
