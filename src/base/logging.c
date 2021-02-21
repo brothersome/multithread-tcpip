@@ -52,85 +52,55 @@ int add_to_log_error(char *filename,int line_number,char *s,...) {
 			switch(*s)
 			{
 			case 's':
-				if (ap==NULL) strcat(so,null_s);
+				value_s = va_arg(ap, char *);
+				if (value_s==NULL || value_s < (char *)0x1000) strcat(so,null_s);
 				else {
-					value_s = va_arg(ap, char *);
-					if (value_s==NULL || value_s < (char *)0x1000) strcat(so,null_s);
+					len = strlen(value_s) + (so - tot_line);
+					if (len < 1024) strcat(so,value_s);
 					else {
-						len = strlen(value_s) + (so - tot_line);
-						if (len < 1024) strcat(so,value_s);
-						else {
-							strncat(so,value_s,1024 - (so - tot_line));
-							tot_line[1024]='\0';
-							len = 1024;
-						}
-						s2 = so;
-						while ((s2=strchr(s2,'\r'))!=NULL) (*s2)='$';
-						s2 = so;
-						while ((s2=strchr(s2,'\n'))!=NULL) (*s2)='$';
+						strncat(so,value_s,1024 - (so - tot_line));
+						tot_line[1024]='\0';
+						len = 1024;
 					}
+					s2 = so;
+					while ((s2=strchr(s2,'\r'))!=NULL) (*s2)='$';
+					s2 = so;
+					while ((s2=strchr(s2,'\n'))!=NULL) (*s2)='$';
 				}
 				so += strlen(so);
 				break;
 			case 'd':
-				if (ap==NULL) strcat(so,null_s);
-				else {
-					value_i = va_arg(ap, int);
-					strcat_number(so,value_i);
-				}
+				value_i = va_arg(ap, int);
+				strcat_number(so,value_i);
 				so += strlen(so);
 				break;
 			case 'p':
-				if (ap==NULL)
+				value_p = va_arg(ap, void *);
+				if (value_p != NULL)
 				{
-					strcat(so,null_s);
+					sprintf(line,"%p",value_p);
+					strcat(so,line);
 				}
 				else {
-					value_p = va_arg(ap, void *);
-					if (value_p != NULL)
-					{
-						sprintf(line,"%p",value_p);
-						strcat(so,line);
-					}
-					else {
-						strcat(so,null_s);
-					}
+					strcat(so,null_s);
 				}
 				so += strlen(so);
 				break;
 			case 'u':
-				if (ap==NULL)
-				{
-					strcat(so,null_s);
-				}
-				else {
-					value_ui = va_arg(ap, int);
-					strcat_number_unsigned(so,value_ui);
-				}
+				value_ui = va_arg(ap, int);
+				strcat_number_unsigned(so,value_ui);
 				so += strlen(so);
 				break;
 			case 'f':
-				if (ap==NULL)
-				{
-					strcat(tot_line,null_s);
-				}
-				else {
-					value_d = va_arg(ap, double);
-					sprintf(line,"%f",value_d);
-					strcat(so,line);
-				}
+				value_d = va_arg(ap, double);
+				sprintf(line,"%f",value_d);
+				strcat(so,line);
 				so += strlen(so);
 				break;
 			case 'e':
-				if (ap==NULL)
-				{
-					strcat(so,null_s);
-				}
-				else {
-					value_d = va_arg(ap, double);
-					sprintf(line,"%e",(double)value_d);
-					strcat(so,line);
-				}
+				value_d = va_arg(ap, double);
+				sprintf(line,"%e",(double)value_d);
+				strcat(so,line);
 				so += strlen(so);
 				break;
 			default:
@@ -139,7 +109,7 @@ int add_to_log_error(char *filename,int line_number,char *s,...) {
 				*so = '\0';
 			}
 		}
-		if (ap!=NULL) va_end(ap);
+		va_end(ap);
 		s = tot_line;
 	}
 	t = now;
@@ -178,85 +148,55 @@ int add_to_log(char *s,...)
 			switch(*s)
 			{
 			case 's':
-				if (ap==NULL) strcat(so,null_s);
+				value_s = va_arg(ap, char *);
+				if (value_s==NULL || value_s < (char *)0x1000) strcat(so,null_s);
 				else {
-					value_s = va_arg(ap, char *);
-					if (value_s==NULL || value_s < (char *)0x1000) strcat(so,null_s);
+					len = strlen(value_s) + (so - tot_line);
+					if (len < 1024) strcat(so,value_s);
 					else {
-						len = strlen(value_s) + (so - tot_line);
-						if (len < 1024) strcat(so,value_s);
-						else {
-							strncat(so,value_s,1024 - (so - tot_line));
-							tot_line[1024]='\0';
-							len = 1024;
-						}
-						s2 = so;
-						while ((s2=strchr(s2,'\r'))!=NULL) (*s2)='$';
-						s2 = so;
-						while ((s2=strchr(s2,'\n'))!=NULL) (*s2)='$';
+						strncat(so,value_s,1024 - (so - tot_line));
+						tot_line[1024]='\0';
+						len = 1024;
 					}
+					s2 = so;
+					while ((s2=strchr(s2,'\r'))!=NULL) (*s2)='$';
+					s2 = so;
+					while ((s2=strchr(s2,'\n'))!=NULL) (*s2)='$';
 				}
 				so += strlen(so);
 				break;
 			case 'd':
-				if (ap==NULL) strcat(so,null_s);
-				else {
-					value_i = va_arg(ap, int);
-					strcat_number(so,value_i);
-				}
+				value_i = va_arg(ap, int);
+				strcat_number(so,value_i);
 				so += strlen(so);
 				break;
 			case 'p':
-				if (ap==NULL)
+				value_p = va_arg(ap, void *);
+				if (value_p != NULL)
 				{
-					strcat(so,null_s);
+					sprintf(line,"%p",value_p);
+					strcat(so,line);
 				}
 				else {
-					value_p = va_arg(ap, void *);
-					if (value_p != NULL)
-					{
-						sprintf(line,"%p",value_p);
-						strcat(so,line);
-					}
-					else {
-						strcat(so,null_s);
-					}
+					strcat(so,null_s);
 				}
 				so += strlen(so);
 				break;
 			case 'u':
-				if (ap==NULL)
-				{
-					strcat(so,null_s);
-				}
-				else {
-					value_ui = va_arg(ap, int);
-					strcat_number_unsigned(so,value_ui);
-				}
+				value_ui = va_arg(ap, int);
+				strcat_number_unsigned(so,value_ui);
 				so += strlen(so);
 				break;
 			case 'f':
-				if (ap==NULL)
-				{
-					strcat(tot_line,null_s);
-				}
-				else {
-					value_d = va_arg(ap, double);
-					sprintf(line,"%f",value_d);
-					strcat(so,line);
-				}
+				value_d = va_arg(ap, double);
+				sprintf(line,"%f",value_d);
+				strcat(so,line);
 				so += strlen(so);
 				break;
 			case 'e':
-				if (ap==NULL)
-				{
-					strcat(so,null_s);
-				}
-				else {
-					value_d = va_arg(ap, double);
-					sprintf(line,"%e",(double)value_d);
-					strcat(so,line);
-				}
+				value_d = va_arg(ap, double);
+				sprintf(line,"%e",(double)value_d);
+				strcat(so,line);
 				so += strlen(so);
 				break;
 			default:
@@ -265,7 +205,7 @@ int add_to_log(char *s,...)
 				*so = '\0';
 			}
 		}
-		if (ap!=NULL) va_end(ap);
+		va_end(ap);
 		s = tot_line;
 	}
 	t = now;

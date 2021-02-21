@@ -1,0 +1,21 @@
+#!/bin/bash
+
+user=$(whoami)
+input=/home/$user
+curdir=$(pwd)
+
+# Directory structure
+if [ ! -d "./obj" ]; then
+	mkdir "./obj"
+fi
+
+if [ ! -d "./obj/base" ]; then
+	mkdir "./obj/base"
+fi
+if [ ! -d "./out" ]; then
+	mkdir "./out"
+fi
+if [ ! -d "./build" ]; then
+	mkdir "./build"
+fi
+

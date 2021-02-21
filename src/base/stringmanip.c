@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include "def.h"
 #include "logging.h"
+#include "stringmanip.h"
 
 void itoa_unsigned(unsigned int n, char s[]);
 
@@ -158,6 +159,7 @@ int bf(char *si,char *soi,int maxlen,char *expr,char *sbuf,int len)
 }
 
 #ifndef __WIN32
+#ifndef itoa
 /* itoa:  convert n to characters in s */
 void itoa(int n, char s[])
 {
@@ -174,6 +176,7 @@ void itoa(int n, char s[])
     s[i] = '\0';
     reverse(s);
 }
+#endif
 #endif
 void itoa_unsigned(unsigned int n, char s[])
 {

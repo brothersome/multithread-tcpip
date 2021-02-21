@@ -8,6 +8,7 @@
 #include "logging.h"
 #include "basemem.h"
 #include "applicationdata.h"
+#include "stringmanip.h"
 
 enum contentkind {
 	CONTENT_CONFIG, CONTENT_STRING, CONTENT_INTEGER, CONTENT_DOUBLE, CONTENT_NOTHING
@@ -290,7 +291,11 @@ char *change_config(char *si,struct configcontent *p)
 			{
 				if (p->kind == CONTENT_INTEGER)
 				{
+#ifdef __WIN32
 					itoa(p->u.value_i,s2,10);
+#else
+					itoa(p->u.value_i,s2);
+#endif
 					return strdup_hold(s2);
 				}
 				if (p->kind == CONTENT_STRING)
